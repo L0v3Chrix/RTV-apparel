@@ -8,11 +8,18 @@ out/
 build/
 dist/
 .turbo/
+.cache/
 
-# Environment
+# Hydrogen / Remix
+storefront/build/
+storefront/dist/
+storefront/.cache/
+
+# Environment (NEVER commit secrets)
 .env
 .env.local
 .env*.local
+.env.production
 
 # IDE
 .idea/
@@ -30,4 +37,7 @@ npm-debug.log*
 
 # Vercel
 .vercel
+
+# Shopify
+.shopify/
 

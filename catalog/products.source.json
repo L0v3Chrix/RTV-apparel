@@ -1,0 +1,36 @@
+{
+  "$schema": "./schema.json",
+  "_notes": {
+    "purpose": "Source of truth for product data before sync to Printful/Shopify",
+    "workflow": "1. Add products here → 2. Create in Printful → 3. Sync to Shopify",
+    "fields": {
+      "id": "Unique identifier (slug format)",
+      "name": "Product display name",
+      "description": "Product description (can use line breaks with \\n)",
+      "productType": "Printful product template (e.g., 'unisex-tee', 'hoodie', 'cap')",
+      "designFile": "Reference to design file (path or filename)",
+      "placement": "Print placement: 'front', 'back', 'front-back', 'left-chest', etc.",
+      "colors": "Array of color names to offer",
+      "sizes": "Array of sizes to offer",
+      "basePrice": "Suggested retail price in USD",
+      "tags": "Shopify tags for organization",
+      "status": "draft | ready | synced"
+    }
+  },
+  "products": [
+    {
+      "id": "example-product",
+      "name": "Example Product Name",
+      "description": "Product description goes here.\\n\\nSecond paragraph.",
+      "productType": "unisex-tee",
+      "printfulProduct": "Bella+Canvas 3001",
+      "designFile": "designs/example-design.png",
+      "placement": "front",
+      "colors": ["Black", "White", "Navy"],
+      "sizes": ["S", "M", "L", "XL", "2XL"],
+      "basePrice": 29.00,
+      "tags": ["tees", "unisex"],
+      "status": "draft"
+    }
+  ]
+}
