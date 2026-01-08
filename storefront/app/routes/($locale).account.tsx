@@ -23,6 +23,7 @@ import {Modal} from '~/components/Modal';
 import {ProductSwimlane} from '~/components/ProductSwimlane';
 import {FeaturedCollections} from '~/components/FeaturedCollections';
 import {usePrefixPathWithLocale} from '~/lib/utils';
+import {requireCustomerAccount} from '~/lib/type';
 import {CACHE_NONE, routeHeaders} from '~/data/cache';
 import {CUSTOMER_DETAILS_QUERY} from '~/graphql/customer-account/CustomerDetailsQuery';
 
@@ -35,6 +36,7 @@ import {
 export const headers = routeHeaders;
 
 export async function loader({request, context, params}: LoaderFunctionArgs) {
+  requireCustomerAccount(context.customerAccount);
   const {data, errors} = await context.customerAccount.query(
     CUSTOMER_DETAILS_QUERY,
   );

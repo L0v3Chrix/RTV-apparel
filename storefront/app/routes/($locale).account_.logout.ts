@@ -6,7 +6,10 @@ import {
   type ActionFunctionArgs,
 } from '@shopify/remix-oxygen';
 
+import {requireCustomerAccount} from '~/lib/type';
+
 export async function doLogout(context: AppLoadContext) {
+  requireCustomerAccount(context.customerAccount);
   return context.customerAccount.logout();
 }
 

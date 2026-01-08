@@ -56,14 +56,17 @@ export default {
 
       /**
        * Create a client for Customer Account API.
+       * Only initialize if credentials are provided.
        */
-      const customerAccount = createCustomerAccountClient({
-        waitUntil,
-        request,
-        session,
-        customerAccountId: env.PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID,
-        shopId: env.SHOP_ID,
-      });
+      const customerAccount = env.PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID
+        ? createCustomerAccountClient({
+            waitUntil,
+            request,
+            session,
+            customerAccountId: env.PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID,
+            shopId: env.SHOP_ID,
+          })
+        : undefined;
 
       const cart = createCartHandler({
         storefront,

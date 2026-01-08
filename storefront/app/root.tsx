@@ -130,13 +130,16 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
   const {cart, customerAccount} = context;
 
   return {
-    isLoggedIn: customerAccount.isLoggedIn(),
+    // customerAccount may be undefined if Customer Account API credentials are not configured
+    isLoggedIn: customerAccount?.isLoggedIn() ?? Promise.resolve(false),
     cart: cart.get(),
   };
 }
 
 export const meta = ({data}: MetaArgs<typeof loader>) => {
-  return getSeoMeta(data!.seo as SeoConfig);
+  // Handle case where data may be null (e.g., during error states)
+  if (!data?.seo) return [];
+  return getSeoMeta(data.seo as SeoConfig);
 };
 
 function Layout({children}: {children?: React.ReactNode}) {

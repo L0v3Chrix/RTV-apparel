@@ -6,6 +6,7 @@ import type {FulfillmentStatus} from '@shopify/hydrogen/customer-account-api-typ
 
 import type {OrderFragment} from 'customer-accountapi.generated';
 import {statusMessage} from '~/lib/utils';
+import {requireCustomerAccount} from '~/lib/type';
 import {Link} from '~/components/Link';
 import {Heading, PageHeader, Text} from '~/components/Text';
 import {CUSTOMER_ORDER_QUERY} from '~/graphql/customer-account/CustomerOrderQuery';
@@ -23,6 +24,8 @@ export async function loader({request, context, params}: LoaderFunctionArgs) {
   const orderToken = queryParams.get('key');
 
   try {
+    requireCustomerAccount(context.customerAccount);
+
     const orderId = orderToken
       ? `gid://shopify/Order/${params.id}?key=${orderToken}`
       : `gid://shopify/Order/${params.id}`;

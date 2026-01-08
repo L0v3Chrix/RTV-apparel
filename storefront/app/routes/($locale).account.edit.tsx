@@ -14,6 +14,7 @@ import invariant from 'tiny-invariant';
 import {Button} from '~/components/Button';
 import {Text} from '~/components/Text';
 import {getInputStyleClasses} from '~/lib/utils';
+import {requireCustomerAccount} from '~/lib/type';
 import {CUSTOMER_UPDATE_MUTATION} from '~/graphql/customer-account/CustomerUpdateMutation';
 
 import {doLogout} from './($locale).account_.logout';
@@ -49,6 +50,8 @@ export const handle = {
 
 export const action: ActionFunction = async ({request, context, params}) => {
   const formData = await request.formData();
+
+  requireCustomerAccount(context.customerAccount);
 
   // Double-check current user is logged in.
   // Will throw a logout redirect if not.

@@ -18,6 +18,7 @@ import invariant from 'tiny-invariant';
 import {Button} from '~/components/Button';
 import {Text} from '~/components/Text';
 import {getInputStyleClasses} from '~/lib/utils';
+import {requireCustomerAccount} from '~/lib/type';
 import {
   UPDATE_ADDRESS_MUTATION,
   DELETE_ADDRESS_MUTATION,
@@ -37,6 +38,7 @@ export const handle = {
 
 export const action: ActionFunction = async ({request, context, params}) => {
   const {customerAccount} = context;
+  requireCustomerAccount(customerAccount);
   const formData = await request.formData();
 
   // Double-check current user is logged in.
@@ -58,8 +60,8 @@ export const action: ActionFunction = async ({request, context, params}) => {
       invariant(!errors?.length, errors?.[0]?.message);
 
       invariant(
-        !data?.customerAddressUpdate?.userErrors?.length,
-        data?.customerAddressUpdate?.userErrors?.[0]?.message,
+        !data?.customerAddressDelete?.userErrors?.length,
+        data?.customerAddressDelete?.userErrors?.[0]?.message,
       );
 
       return redirect(
