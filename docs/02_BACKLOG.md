@@ -12,7 +12,7 @@
 | ID | Task | Owner | Size | Status | Acceptance Criteria | Dependencies |
 |----|------|-------|------|--------|---------------------|--------------|
 | SF-01 | Scaffold Hydrogen project | Pack C | M | Done | `npm run dev` works, routes render | None |
-| SF-02 | Configure environment variables | Pack C | S | Todo | .env works locally, no errors | SF-01, Pack B |
+| SF-02 | Configure environment variables | Pack C | S | Done | .env works locally, no errors | SF-01, Pack B |
 | SF-03 | Home page layout | Pack C | M | Todo | Hero, featured products section | SF-02, brand spec |
 | SF-04 | Collection page | Pack C | M | Todo | Grid of products, responsive | SF-02 |
 | SF-05 | Product detail page | Pack C | M | Todo | Images, variants, add to cart | SF-02 |

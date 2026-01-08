@@ -87,3 +87,31 @@ Use the official Printful Shopify app. Products created in Printful sync automat
 - No fulfillment code in our repo
 - Product management happens in Printful dashboard
 - Pricing/variants set in Printful, synced to Shopify
+
+---
+
+### DEC-004: Make Customer Account API Optional
+**Date:** 2025-01-07
+**Status:** Accepted
+**Decider:** Chrix (via Claude session)
+
+**Context:**
+Hydrogen template includes Customer Account API integration by default. However, the Customer Account API requires additional credentials (`PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID`, `SHOP_ID`) that aren't always configured, especially during early development.
+
+**Options Considered:**
+1. **Require all credentials** — Fail hard if Customer Account API credentials missing
+   - Pros: Consistent behavior, no surprises
+   - Cons: Can't run storefront without full setup, blocks development
+
+2. **Make Customer Account API optional** — Gracefully degrade when credentials missing
+   - Pros: Storefront runs with minimal config, account routes return 501
+   - Cons: Account features disabled until configured
+
+**Decision:**
+Make Customer Account API optional. Check for `PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID` before initializing `customerAccount`. Created `requireCustomerAccount()` helper that throws 501 "Not Implemented" response when accessed without credentials.
+
+**Consequences:**
+- Storefront runs with only Storefront API credentials
+- `/account/*` routes return 501 until Customer Account API configured
+- Easy to enable later by adding credentials to `.env`
+- No code changes needed to enable — just environment variables
