@@ -8,7 +8,8 @@ export const metadata: Metadata = {
   description: 'Browse all our premium streetwear collections',
 };
 
-export const revalidate = 3600;
+// Force dynamic rendering - env vars aren't available at build time on Vercel
+export const dynamic = 'force-dynamic';
 
 export default async function CollectionsPage() {
   const collections = await getCollections();

@@ -4,7 +4,8 @@ import { getFeaturedProducts } from '@/lib/shopify/queries';
 import { ProductCard } from '@/components/ui/ProductCard';
 import { FamilyCarousel } from '@/components/sections/FamilyCarousel';
 
-export const revalidate = 3600; // Revalidate every hour
+// Force dynamic rendering - env vars aren't available at build time on Vercel
+export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
   const featuredProducts = await getFeaturedProducts(8);
