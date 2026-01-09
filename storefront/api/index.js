@@ -1,5 +1,5 @@
 import {createRequestHandler} from '@shopify/remix-oxygen';
-import * as build from '../dist/server/index.js';
+import build from '../dist/server/index.js';
 
 const handleRequest = createRequestHandler({
   build,
