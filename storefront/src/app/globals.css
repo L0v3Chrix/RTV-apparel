@@ -459,14 +459,7 @@ img {
   @apply transition-opacity duration-300;
 }
 
-img[loading="lazy"] {
-  @apply opacity-0;
-}
-
-img[loading="lazy"].loaded,
-img:not([loading="lazy"]) {
-  @apply opacity-100;
-}
+/* Note: Removed opacity:0 for lazy images - Next.js Image handles this internally */
 
 /* Hide scrollbar utility */
 .scrollbar-hide {

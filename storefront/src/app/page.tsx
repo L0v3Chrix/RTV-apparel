@@ -88,6 +88,7 @@ export default async function HomePage() {
                     alt="Raize The Vibe Family wearing our apparel"
                     fill
                     priority
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover"
                   />
                   {/* Overlay gradient */}
@@ -152,11 +153,12 @@ export default async function HomePage() {
           <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
             {/* Product Image */}
             <div className="relative">
-              <div className="aspect-square bg-white rounded-3xl overflow-hidden shadow-card border border-rtv-sand/50">
+              <div className="relative aspect-square bg-white rounded-3xl overflow-hidden shadow-card border border-rtv-sand/50">
                 <Image
-                  src="/images/products/worship-tee.png"
+                  src="/images/products/worship.png"
                   alt="Worship Is My Weapon Tee"
                   fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-contain p-8"
                 />
               </div>

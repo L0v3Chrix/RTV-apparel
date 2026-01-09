@@ -87,13 +87,15 @@ export function FamilyCarousel() {
             className="flex-shrink-0 w-40 sm:w-48 md:w-56 snap-start group"
           >
             <div
-              className="relative aspect-square rounded-2xl overflow-hidden mb-3 bg-white border border-rtv-sand/50 shadow-soft transition-all duration-300 group-hover:shadow-card group-hover:scale-[1.02]"
+              className="relative w-full rounded-2xl overflow-hidden mb-3 bg-white border border-rtv-sand/50 shadow-soft transition-all duration-300 group-hover:shadow-card group-hover:scale-[1.02]"
+              style={{ aspectRatio: '1/1' }}
             >
               <Image
                 src={image.src}
                 alt={image.caption}
-                fill
-                className="object-cover"
+                width={224}
+                height={224}
+                className="object-cover w-full h-full"
               />
               {/* Subtle gradient overlay on hover */}
               <div className="absolute inset-0 bg-gradient-to-t from-rtv-ink/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
