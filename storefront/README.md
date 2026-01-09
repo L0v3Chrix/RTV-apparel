@@ -1,58 +1,178 @@
-# Hydrogen template: Demo Store
+# RTV Storefront — Next.js Headless Shopify
 
-Hydrogen is Shopify’s stack for headless commerce. Hydrogen is designed to dovetail with [Remix](https://remix.run/), Shopify’s full stack web framework. This template contains a **full-featured setup** of components, queries and tooling to get started with Hydrogen. It is deployed at [hydrogen.shop](https://hydrogen.shop)
+> Raize The Vibe Apparel storefront built with Next.js 14 App Router and Shopify Storefront API.
 
-[Check out Hydrogen docs](https://shopify.dev/custom-storefronts/hydrogen)
-[Get familiar with Remix](https://remix.run/docs/en/v1)
+## Tech Stack
 
-## What's included
+- **Framework:** Next.js 14 (App Router)
+- **Language:** TypeScript (strict mode)
+- **Styling:** Tailwind CSS with RTV brand colors
+- **Data:** Shopify Storefront API (GraphQL)
+- **Cart:** Cookie-based cart persistence with signed cookies
+- **Deployment:** Vercel (native Next.js support)
 
-- Remix
-- Hydrogen
-- Oxygen
-- Shopify CLI
-- ESLint
-- Prettier
-- GraphQL generator
-- TypeScript and JavaScript flavors
-- Tailwind CSS (via PostCSS)
-- Full-featured setup of components and routes
+## Project Structure
 
-## Getting started
-
-**Requirements:**
-
-- Node.js version 18.0.0 or higher
-
-```bash
-npm create @shopify/hydrogen@latest -- --template demo-store
+```
+storefront/
+├── src/
+│   ├── app/                   # Next.js App Router routes
+│   │   ├── page.tsx           # Home (/)
+│   │   ├── layout.tsx         # Root layout
+│   │   ├── collections/       # Collection pages
+│   │   ├── products/          # Product detail pages
+│   │   ├── cart/              # Cart page
+│   │   ├── pages/             # Static content pages
+│   │   │   ├── our-story/
+│   │   │   ├── faq/
+│   │   │   ├── prayer/
+│   │   │   └── why-this-drop-matters/
+│   │   └── api/
+│   │       └── cart/          # Cart API routes
+│   ├── lib/
+│   │   ├── shopify/           # Shopify GraphQL client
+│   │   ├── cart.ts            # Cart cookie helpers
+│   │   └── utils.ts           # Utilities
+│   ├── components/
+│   │   ├── layout/            # Header, Footer, CartButton
+│   │   ├── sections/          # Page sections (FamilyCarousel, etc.)
+│   │   └── ui/                # Reusable UI components (ProductCard, etc.)
+│   └── content/
+│       └── siteCopy.ts        # All site copy (single source of truth)
+├── public/                    # Static assets
+├── tailwind.config.ts         # RTV brand colors & typography
+├── .env.example               # Required environment variables
+└── vercel.json                # Vercel configuration
 ```
 
-Remember to update `.env` with your shop's domain and Storefront API token!
+## Getting Started
 
-## Building for production
+### 1. Install Dependencies
 
 ```bash
-npm run build
+npm install
 ```
 
-## Local development
+### 2. Configure Environment Variables
+
+```bash
+cp .env.example .env.local
+```
+
+Edit `.env.local` with your Shopify credentials:
+
+```env
+SHOPIFY_STORE_DOMAIN=your-store.myshopify.com
+SHOPIFY_STOREFRONT_API_TOKEN=your-storefront-token
+SHOPIFY_STOREFRONT_API_VERSION=2024-10
+SESSION_SECRET=generate-with-openssl-rand-hex-32
+```
+
+### 3. Run Development Server
 
 ```bash
 npm run dev
 ```
 
-## Setup for using Customer Account API (`/account` section)
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-### Setup public domain using ngrok
+## Available Scripts
 
-1. Setup a [ngrok](https://ngrok.com/) account and add a permanent domain (ie. `https://<your-ngrok-domain>.app`).
-1. Install the [ngrok CLI](https://ngrok.com/download) to use in terminal
-1. Start ngrok using `ngrok http --domain=<your-ngrok-domain>.app 3000`
+```bash
+npm run dev      # Start development server
+npm run build    # Production build
+npm run start    # Start production server
+npm run lint     # Run ESLint
+```
 
-### Include public domain in Customer Account API settings
+## Routes
 
-1. Go to your Shopify admin => `Hydrogen` or `Headless` app/channel => Customer Account API => Application setup
-1. Edit `Callback URI(s)` to include `https://<your-ngrok-domain>.app/account/authorize`
-1. Edit `Javascript origin(s)` to include your public domain `https://<your-ngrok-domain>.app` or keep it blank
-1. Edit `Logout URI` to include your public domain `https://<your-ngrok-domain>.app` or keep it blank
+| Route | Description |
+|-------|-------------|
+| `/` | Home page with featured products |
+| `/collections` | All collections |
+| `/collections/[handle]` | Single collection |
+| `/products/[handle]` | Product detail page |
+| `/cart` | Shopping cart |
+| `/pages/our-story` | Our Story page |
+| `/pages/faq` | FAQ page |
+| `/pages/prayer` | Prayer page |
+| `/pages/why-this-drop-matters` | Why This Drop Matters page |
+
+## Cart System
+
+Cart is managed via cookie-based persistence:
+
+1. Cart ID stored in HTTP-only signed cookie (`rtv_cart_id`)
+2. Cart operations via API routes:
+   - `GET /api/cart` — Get current cart
+   - `POST /api/cart/add` — Add line items
+   - `POST /api/cart/update` — Update quantities
+   - `POST /api/cart/remove` — Remove line items
+3. Checkout redirects to Shopify-hosted checkout
+
+## Deployment
+
+### Vercel (Recommended)
+
+1. Connect your GitHub repository to Vercel
+2. Set root directory to `storefront`
+3. Add environment variables in Vercel dashboard
+4. Deploy!
+
+Vercel will automatically detect Next.js and deploy with optimal settings.
+
+### Environment Variables for Production
+
+Set these in Vercel dashboard:
+
+- `SHOPIFY_STORE_DOMAIN`
+- `SHOPIFY_STOREFRONT_API_TOKEN`
+- `SHOPIFY_STOREFRONT_API_VERSION`
+- `SESSION_SECRET`
+- `NEXT_PUBLIC_SITE_URL` (optional)
+
+## Brand Colors (2025 Warm & Bold)
+
+RTV brand colors are defined in `tailwind.config.ts` under `rtv.*`:
+
+**Backgrounds:**
+- `rtv-cream` `#FAF8F5` — Light background
+- `rtv-paper` `#F5F1EB` — Card backgrounds
+- `rtv-sand` `#EDE8E0` — Section dividers
+
+**Text & Dark:**
+- `rtv-ink` `#1C1917` — Primary text
+- `rtv-charcoal` `#292524` — Secondary text
+- `rtv-stone` `#44403C` — Muted text
+
+**Accent Colors:**
+- `rtv-teal` `#2D8A8C` — Primary CTA
+- `rtv-rust` `#C45D3E` — Secondary accent
+- `rtv-gold` `#B8860B` — Premium highlights
+
+## Content Management
+
+All site copy is centralized in `src/content/siteCopy.ts`. This includes:
+
+- Brand messaging and CTAs
+- Product descriptions
+- Page content (Our Story, FAQ, Prayer)
+- Navigation and footer links
+- Error messages
+
+**V2 Plan:** Move to Shopify metafields for CMS editing.
+
+## Legacy Storefront
+
+The original Hydrogen (Remix) storefront is preserved at `/storefront-hydrogen-legacy/` for reference. It is no longer deployed.
+
+## Contributing
+
+1. Make changes in a feature branch
+2. Run `npm run lint` and `npm run build`
+3. Create a pull request
+
+---
+
+Built with love by Raize The Vibe.
