@@ -6,13 +6,13 @@
   "framework": null,
   "functions": {
     "api/index.js": {
-      "memory": 1024,
+      "runtime": "nodejs20.x",
       "maxDuration": 30
     }
   },
   "rewrites": [
     {
-      "source": "/((?!assets/).*)",
+      "source": "/((?!assets/|api/).*)",
       "destination": "/api/index"
     }
   ],
