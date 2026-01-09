@@ -1,19 +1,25 @@
 import type { ShopifyResponse } from './types';
 
-const SHOPIFY_STORE_DOMAIN = process.env.SHOPIFY_STORE_DOMAIN!;
-const SHOPIFY_STOREFRONT_API_TOKEN = process.env.SHOPIFY_STOREFRONT_API_TOKEN!;
-const SHOPIFY_STOREFRONT_API_VERSION =
-  process.env.SHOPIFY_STOREFRONT_API_VERSION || '2024-10';
+// Get config lazily at runtime, not at module load time
+// This prevents build errors when env vars aren't available during static analysis
+function getConfig() {
+  const domain = process.env.SHOPIFY_STORE_DOMAIN;
+  const token = process.env.SHOPIFY_STOREFRONT_API_TOKEN;
+  const version = process.env.SHOPIFY_STOREFRONT_API_VERSION || '2024-10';
 
-if (!SHOPIFY_STORE_DOMAIN) {
-  throw new Error('SHOPIFY_STORE_DOMAIN is required');
+  if (!domain) {
+    throw new Error('SHOPIFY_STORE_DOMAIN is required');
+  }
+
+  if (!token) {
+    throw new Error('SHOPIFY_STOREFRONT_API_TOKEN is required');
+  }
+
+  return {
+    endpoint: `https://${domain}/api/${version}/graphql.json`,
+    token,
+  };
 }
-
-if (!SHOPIFY_STOREFRONT_API_TOKEN) {
-  throw new Error('SHOPIFY_STOREFRONT_API_TOKEN is required');
-}
-
-const endpoint = `https://${SHOPIFY_STORE_DOMAIN}/api/${SHOPIFY_STOREFRONT_API_VERSION}/graphql.json`;
 
 export async function shopifyFetch<T>({
   query,
@@ -26,11 +32,13 @@ export async function shopifyFetch<T>({
   cache?: RequestCache;
   tags?: string[];
 }): Promise<T> {
+  const { endpoint, token } = getConfig();
+
   const options: RequestInit = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_API_TOKEN,
+      'X-Shopify-Storefront-Access-Token': token,
     },
     body: JSON.stringify({ query, variables }),
     cache,
