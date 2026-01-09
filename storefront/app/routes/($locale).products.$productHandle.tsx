@@ -145,53 +145,75 @@ export default function Product() {
 
   return (
     <>
-      <Section className="px-0 md:px-8 lg:px-12">
-        <div className="grid items-start md:gap-6 lg:gap-20 md:grid-cols-2 lg:grid-cols-3">
-          <ProductGallery
-            media={media.nodes}
-            className="w-full lg:col-span-2"
-          />
-          <div className="sticky md:-mb-nav md:top-nav md:-translate-y-nav md:h-screen md:pt-nav hiddenScroll md:overflow-y-scroll">
-            <section className="flex flex-col w-full max-w-xl gap-8 p-6 md:mx-auto md:max-w-sm md:px-0">
-              <div className="grid gap-2">
-                <Heading as="h1" className="whitespace-normal">
-                  {title}
-                </Heading>
-                {vendor && (
-                  <Text className={'opacity-50 font-medium'}>{vendor}</Text>
-                )}
+      {/* PDP Hero Section - Two-column layout with sticky buy panel */}
+      <section className="bg-rtv-obsidian min-h-screen pt-20 md:pt-nav">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12 py-6 md:py-12">
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 items-start">
+            {/* Left: Product Gallery */}
+            <ProductGallery media={media.nodes} className="w-full" />
+
+            {/* Right: Sticky Buy Panel */}
+            <div className="md:sticky md:top-28">
+              <div
+                className="
+                  bg-white/[0.06]
+                  backdrop-blur-[20px]
+                  border border-white/10
+                  rounded-xl md:rounded-2xl
+                  p-4 sm:p-6 md:p-8
+                  shadow-[0_8px_32px_rgba(0,0,0,0.3)]
+                "
+              >
+                {/* Product Title & Vendor */}
+                <div className="mb-4 md:mb-6">
+                  <Heading
+                    as="h1"
+                    className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-1 md:mb-2"
+                  >
+                    {title}
+                  </Heading>
+                  {vendor && (
+                    <Text className="text-white/50 text-xs sm:text-sm font-medium uppercase tracking-wide">
+                      {vendor}
+                    </Text>
+                  )}
+                </div>
+
+                {/* Product Form (variants, add to cart, etc.) */}
+                <ProductForm
+                  productOptions={productOptions}
+                  selectedVariant={selectedVariant}
+                  storeDomain={storeDomain}
+                />
+
+                {/* Product Details Accordion */}
+                <div className="mt-6 md:mt-8 pt-4 md:pt-6 border-t border-white/10 space-y-3">
+                  {descriptionHtml && (
+                    <ProductDetail
+                      title="Product Details"
+                      content={descriptionHtml}
+                    />
+                  )}
+                  {shippingPolicy?.body && (
+                    <ProductDetail
+                      title="Shipping"
+                      content={getExcerpt(shippingPolicy.body)}
+                      learnMore={`/policies/${shippingPolicy.handle}`}
+                    />
+                  )}
+                  {refundPolicy?.body && (
+                    <ProductDetail
+                      title="Returns"
+                      content={getExcerpt(refundPolicy.body)}
+                      learnMore={`/policies/${refundPolicy.handle}`}
+                    />
+                  )}
+                </div>
               </div>
-              <ProductForm
-                productOptions={productOptions}
-                selectedVariant={selectedVariant}
-                storeDomain={storeDomain}
-              />
-              <div className="grid gap-4 py-4">
-                {descriptionHtml && (
-                  <ProductDetail
-                    title="Product Details"
-                    content={descriptionHtml}
-                  />
-                )}
-                {shippingPolicy?.body && (
-                  <ProductDetail
-                    title="Shipping"
-                    content={getExcerpt(shippingPolicy.body)}
-                    learnMore={`/policies/${shippingPolicy.handle}`}
-                  />
-                )}
-                {refundPolicy?.body && (
-                  <ProductDetail
-                    title="Returns"
-                    content={getExcerpt(refundPolicy.body)}
-                    learnMore={`/policies/${refundPolicy.handle}`}
-                  />
-                )}
-              </div>
-            </section>
+            </div>
           </div>
         </div>
-      </Section>
+      </section>
       <Suspense fallback={<Skeleton className="h-32" />}>
         <Await
           errorElement="There was a problem loading related products"
@@ -240,17 +262,15 @@ export function ProductForm({
     selectedVariant?.price?.amount < selectedVariant?.compareAtPrice?.amount;
 
   return (
-    <div className="grid gap-10">
-      <div className="grid gap-4">
+    <div className="space-y-6">
+      {/* Product Options */}
+      <div className="space-y-5">
         {productOptions.map((option, optionIndex) => (
-          <div
-            key={option.name}
-            className="product-options flex flex-col flex-wrap mb-4 gap-y-2 last:mb-0"
-          >
-            <Heading as="legend" size="lead" className="min-w-[4rem]">
+          <div key={option.name} className="space-y-3">
+            <label className="text-sm font-medium text-white/70 uppercase tracking-wide">
               {option.name}
-            </Heading>
-            <div className="flex flex-wrap items-baseline gap-4">
+            </label>
+            <div className="flex flex-wrap gap-2">
               {option.optionValues.length > 7 ? (
                 <div className="relative w-full">
                   <Listbox>
@@ -259,10 +279,10 @@ export function ProductForm({
                         <Listbox.Button
                           ref={closeRef}
                           className={clsx(
-                            'flex items-center justify-between w-full py-3 px-4 border border-primary',
-                            open
-                              ? 'rounded-b md:rounded-t md:rounded-b-none'
-                              : 'rounded',
+                            'flex items-center justify-between w-full py-3 px-4',
+                            'bg-white/5 border border-white/15 text-white',
+                            'hover:border-white/30 transition-colors',
+                            open ? 'rounded-t-lg' : 'rounded-lg',
                           )}
                         >
                           <span>
@@ -275,8 +295,10 @@ export function ProductForm({
                         </Listbox.Button>
                         <Listbox.Options
                           className={clsx(
-                            'border-primary bg-contrast absolute bottom-12 z-30 grid h-48 w-full overflow-y-scroll rounded-t border px-2 py-2 transition-[max-height] duration-150 sm:bottom-auto md:rounded-b md:rounded-t-none md:border-t-0 md:border-b',
-                            open ? 'max-h-48' : 'max-h-0',
+                            'bg-rtv-obsidian/95 backdrop-blur-lg absolute z-30 w-full',
+                            'max-h-48 overflow-y-auto rounded-b-lg',
+                            'border border-white/15 border-t-0',
+                            open ? 'block' : 'hidden',
                           )}
                         >
                           {option.optionValues
@@ -300,8 +322,9 @@ export function ProductForm({
                                     to={`/products/${handle}?${variantUriQuery}`}
                                     preventScrollReset
                                     className={clsx(
-                                      'text-primary w-full p-2 transition rounded flex justify-start items-center text-left cursor-pointer',
-                                      selected && 'bg-primary/10',
+                                      'w-full p-3 flex items-center text-white',
+                                      'hover:bg-white/10 transition-colors cursor-pointer',
+                                      selected && 'bg-rtv-cyan/20 text-rtv-cyan',
                                     )}
                                     onClick={() => {
                                       if (!closeRef?.current) return;
@@ -310,7 +333,7 @@ export function ProductForm({
                                   >
                                     {name}
                                     {selected && (
-                                      <span className="ml-2">
+                                      <span className="ml-auto">
                                         <IconCheck />
                                       </span>
                                     )}
@@ -342,9 +365,12 @@ export function ProductForm({
                       prefetch="intent"
                       replace
                       className={clsx(
-                        'leading-none py-1 border-b-[1.5px] cursor-pointer transition-all duration-200',
-                        selected ? 'border-primary/50' : 'border-primary/0',
-                        available ? 'opacity-100' : 'opacity-50',
+                        'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
+                        'border',
+                        selected
+                          ? 'bg-rtv-cyan text-rtv-obsidian border-rtv-cyan'
+                          : 'bg-white/5 text-white border-white/15 hover:border-white/30',
+                        !available && 'opacity-40 cursor-not-allowed',
                       )}
                     >
                       <ProductOptionSwatch swatch={swatch} name={name} />
@@ -355,12 +381,44 @@ export function ProductForm({
             </div>
           </div>
         ))}
-        {selectedVariant && (
-          <div className="grid items-stretch gap-4">
+      </div>
+
+      {/* Price & Add to Cart */}
+      {selectedVariant && (
+        <div className="space-y-4 pt-4">
+          {/* Price Display */}
+          <div className="flex items-baseline gap-3">
+            <Money
+              withoutTrailingZeros
+              data={selectedVariant?.price!}
+              as="span"
+              className="text-2xl font-bold text-white"
+              data-test="price"
+            />
+            {isOnSale && (
+              <Money
+                withoutTrailingZeros
+                data={selectedVariant?.compareAtPrice!}
+                as="span"
+                className="text-lg text-white/40 line-through"
+              />
+            )}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="space-y-3">
             {isOutOfStock ? (
-              <Button variant="secondary" disabled>
-                <Text>Sold out</Text>
-              </Button>
+              <button
+                disabled
+                className="
+                  w-full py-4 px-6 rounded-full
+                  bg-white/10 text-white/50
+                  font-semibold text-sm uppercase tracking-wide
+                  cursor-not-allowed
+                "
+              >
+                Sold Out
+              </button>
             ) : (
               <AddToCartButton
                 lines={[
@@ -371,27 +429,15 @@ export function ProductForm({
                 ]}
                 variant="primary"
                 data-test="add-to-cart"
+                className="
+                  w-full py-4 px-6 rounded-full
+                  bg-rtv-cyan hover:bg-rtv-cyan/90
+                  text-rtv-obsidian font-semibold text-sm uppercase tracking-wide
+                  transition-all duration-300
+                  hover:shadow-[0_0_20px_rgba(99,179,237,0.4)]
+                "
               >
-                <Text
-                  as="span"
-                  className="flex items-center justify-center gap-2"
-                >
-                  <span>Add to Cart</span> <span>·</span>{' '}
-                  <Money
-                    withoutTrailingZeros
-                    data={selectedVariant?.price!}
-                    as="span"
-                    data-test="price"
-                  />
-                  {isOnSale && (
-                    <Money
-                      withoutTrailingZeros
-                      data={selectedVariant?.compareAtPrice!}
-                      as="span"
-                      className="opacity-50 strike"
-                    />
-                  )}
-                </Text>
+                Add to Cart
               </AddToCartButton>
             )}
             {!isOutOfStock && (
@@ -402,8 +448,8 @@ export function ProductForm({
               />
             )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

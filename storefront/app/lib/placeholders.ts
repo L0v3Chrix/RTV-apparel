@@ -1,6 +1,90 @@
 import type {Product} from '@shopify/hydrogen/storefront-api-types';
 
-// Demo store placeholders
+/**
+ * RTV Apparel Placeholder Assets
+ * V1 PLACEHOLDER — Replace paths for V2 production
+ *
+ * Usage:
+ *   import { rtvPlaceholders } from '~/lib/placeholders';
+ *   <img src={rtvPlaceholders.family.hero} alt="..." />
+ */
+
+/**
+ * RTV-specific images
+ * Real family photos and product images from /public/images/
+ */
+export const rtvPlaceholders = {
+  family: {
+    // Main hero background - the big family group shot (3 generations)
+    hero: '/images/family/3-generations.jpeg',
+    // Carousel images - ALL real family photos (6 total)
+    carousel: [
+      '/images/family/3-generations.jpeg',
+      '/images/family/older-kids.jpeg',
+      '/images/family/yaya-grandpa.jpeg',
+      '/images/family/me-wife.png',
+      '/images/family/wife-me.jpeg',
+      '/images/family/w-wife-me.jpeg',
+    ],
+    // Story page photos
+    story: [
+      '/images/family/3-generations.jpeg',
+      '/images/family/older-kids.jpeg',
+      '/images/family/yaya-grandpa.jpeg',
+      '/images/family/me-wife.png',
+    ],
+    // All family photos for various uses
+    all: [
+      '/images/family/3-generations.jpeg',
+      '/images/family/older-kids.jpeg',
+      '/images/family/yaya-grandpa.jpeg',
+      '/images/family/me-wife.png',
+      '/images/family/wife-me.jpeg',
+      '/images/family/w-wife-me.jpeg',
+    ],
+  },
+  products: {
+    // Product mockups - shirt PNGs
+    featured: [
+      '/images/products/raize-tee.png',
+      '/images/products/worship-tee.png',
+      '/images/products/iam-tee.png',
+      '/images/products/godknows-tee.png',
+    ],
+    // All products catalog
+    all: [
+      '/images/products/raize-tee.png',
+      '/images/products/raize-hoodie.png',
+      '/images/products/worship-tee.png',
+      '/images/products/iam-tee.png',
+      '/images/products/iam-hoodie.png',
+      '/images/products/godknows-tee.png',
+      '/images/products/pronouns-tee.png',
+      '/images/products/love-tee.png',
+      '/images/products/still-mens-tee.png',
+      '/images/products/still-womens-tee.png',
+    ],
+    // Lifestyle shots (family wearing products)
+    lifestyle: [
+      '/images/family/3-generations.jpeg',
+      '/images/family/older-kids.jpeg',
+      '/images/family/yaya-grandpa.jpeg',
+    ],
+  },
+  brand: {
+    logo: '/images/logo-header-transparent.png',
+    logoLight: '/images/logo-header-transparent.png',
+    icon: '/images/icon-placeholder.svg',
+    ogImage: '/images/family/3-generations.jpeg',
+  },
+  fallback: {
+    product: '/images/products/raize-tee.png',
+    collection: '/images/family/3-generations.jpeg',
+    avatar: '/images/family/me-wife.png',
+  },
+};
+
+// Demo store placeholders (keeping original Hydrogen placeholders)
 const PLACEHOLDERS = {
   HEROS: [
     // primaryHero
