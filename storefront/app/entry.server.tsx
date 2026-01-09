@@ -24,6 +24,15 @@ export default async function handleRequest(
       'https://www.googletagmanager.com',
       ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:*'] : []),
     ],
+    // Allow images from self, CDN, and placeholder services
+    imgSrc: [
+      "'self'",
+      'https://cdn.shopify.com',
+      'https://picsum.photos',
+      'https://fastly.picsum.photos',
+      'data:',
+      ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:*'] : []),
+    ],
   });
 
   const body = await renderToReadableStream(
